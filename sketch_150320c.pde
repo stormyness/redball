@@ -16,6 +16,7 @@ void setup() {
 }
 
 void draw() {
+  println("xv: ", int(xv), " yv: ", int(yv));
   background(0);
   translate(200,200);
   ellipse(xval, yval, 20, 20);

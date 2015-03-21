@@ -32,7 +32,9 @@ void draw() {
   }
   
 
-  
+  // these next four if statements reflect 
+  // the behavior of the ball when it reaches
+  // the boundaries
   if ( xval >= 190 ) {
     xval = 189;
     xv = xv*-0.7;
@@ -66,7 +68,7 @@ void draw() {
     }
   }
 
-
+// Controls. Arrow keys add velocity in corresponding direction. 's' stops the ball.
 void keyPressed() {
   if (keyCode == LEFT) {
     xv += -1;

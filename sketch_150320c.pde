@@ -5,17 +5,40 @@ float yval;
 float xv;
 float yv;
 int ms;
+int particles = 49;
 
+// particle effect class
+class Exhaust {
+  float xpos, ypos;
+  float lifetime = 0 + random(-5, 5);
+  Exhaust (float x, float y) {
+    xpos = x;
+    ypos = y;
+  }
+  void update() {
+    noStroke();
+    fill(255-1*lifetime, 0, 0);
+    rect(xpos, ypos, 10-lifetime*0.1, 10-lifetime*0.1);
+    lifetime+=random(0.1 , 1);
+    if(lifetime >= 100)
+    {
+      xpos = xval;
+      ypos = yval;
+      lifetime = random(-100, 100);
+    }  
+  }
+}
 // particle exhaust effect
-  Exhaust e1 = new Exhaust(xval, yval);
-
+Exhaust e1[] = new Exhaust[particles];
+  
 void setup() {
   
   size(400,400);
   strokeWeight(3);
-  
-
-    
+ for (int i = 0; i< particles; i++) {
+   
+    e1[i] = new Exhaust(xval + random(-5, 5), yval + random(-5, 5));
+  }  
 }
 
 void draw() {
@@ -73,8 +96,9 @@ void draw() {
     }
     
     //update exhaust particle
-    e1.update();
-    
+    for(int i = 0; i < particles; i++){
+      e1[i].update();
+    }
 }  
 
 // Controls. Arrow keys add velocity in corresponding direction. 's' stops the ball.
@@ -101,26 +125,7 @@ void keyPressed() {
   }   
 }
 
-// particle effect class
-class Exhaust {
-  float xpos, ypos;
-  float lifetime;
-  Exhaust (float x, float y) {
-    xpos = x;
-    ypos = y;
-  }
-  void update() {
-    noStroke();
-    fill(255-5*lifetime, 0, 0);
-    rect(xpos, ypos, 10-lifetime*0.1, 10-lifetime*0.1);
-    lifetime+=1;
-    if(lifetime >= 100)
-    {
-      xpos = xval;
-      ypos = yval;
-      lifetime = 0;
-    }  
-  }
-}
+
+
     
       

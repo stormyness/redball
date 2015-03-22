@@ -17,7 +17,7 @@ class Exhaust {
   }
   void update() {
     noStroke();
-    fill(255-1*lifetime, 0, 0);
+    fill(255-2*lifetime, 0, 0);
     rect(xpos, ypos, 10-lifetime*0.1, 10-lifetime*0.1);
     lifetime+=random(0.1 , 1);
     if(lifetime >= 100)

@@ -4,20 +4,25 @@ float xval;
 float yval;
 float xv;
 float yv;
+int ms;
 
-
+// particle exhaust effect
+  Exhaust e1 = new Exhaust(xval, yval);
 
 void setup() {
   
   size(400,400);
-  background(0);
   strokeWeight(3);
-  stroke(255);
-  fill(255,0,0);
   
+
+    
 }
 
 void draw() {
+  // keeping track of time
+  ms = millis();
+  fill(255,0,0);
+  stroke(255);
   println("xv: ", int(xv), " yv: ", int(yv));
   background(0);
   translate(200,200);
@@ -66,7 +71,11 @@ void draw() {
         xv = xv*0.98;
      
     }
-  }
+    
+    //update exhaust particle
+    e1.update();
+    
+}  
 
 // Controls. Arrow keys add velocity in corresponding direction. 's' stops the ball.
 void keyPressed() {
@@ -91,3 +100,27 @@ void keyPressed() {
     yv = 0;
   }   
 }
+
+// particle effect class
+class Exhaust {
+  float xpos, ypos;
+  float lifetime;
+  Exhaust (float x, float y) {
+    xpos = x;
+    ypos = y;
+  }
+  void update() {
+    noStroke();
+    fill(255-5*lifetime, 0, 0);
+    rect(xpos, ypos, 10-lifetime*0.1, 10-lifetime*0.1);
+    lifetime+=1;
+    if(lifetime >= 100)
+    {
+      xpos = xval;
+      ypos = yval;
+      lifetime = 0;
+    }  
+  }
+}
+    
+      

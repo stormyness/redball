@@ -1,3 +1,9 @@
+import ddf.minim.*;
+import ddf.minim.ugens.*;
+
+Minim minim;
+AudioOutput out;
+Oscil wave;
 
 
 float xval; 
@@ -10,10 +16,13 @@ int particles = 49;
 // particle effect class
 class Exhaust {
   float xpos, ypos;
-  float lifetime = 0 + random(-5, 5);
-  Exhaust (float x, float y) {
+  int queuepos;
+  float lifetime = 0;
+  Exhaust (float x, float y, int q) {
     xpos = x;
     ypos = y;
+    queuepos = 30*q;
+    lifetime += queuepos;
   }
   void update() {
     noStroke();
@@ -24,7 +33,7 @@ class Exhaust {
     {
       xpos = xval;
       ypos = yval;
-      lifetime = random(-100, 100);
+      lifetime = random(-10, 10);
     }  
   }
 }
@@ -32,12 +41,21 @@ class Exhaust {
 Exhaust e1[] = new Exhaust[particles];
   
 void setup() {
+    minim = new Minim(this);
+  
+  // use the getLineOut method of the Minim object to get an AudioOutput object
+  out = minim.getLineOut();
+    // create a sine wave Oscil, set to 440 Hz, at 0.5 amplitude
+  wave = new Oscil( 440, 0.5f, Waves.SINE );
+  // patch the Oscil to the output
+  
   
   size(400,400);
   strokeWeight(3);
  for (int i = 0; i< particles; i++) {
    
-    e1[i] = new Exhaust(xval + random(-5, 5), yval + random(-5, 5));
+    e1[i] = new Exhaust(xval + random(-5, 5), yval + random(-5, 5), i);
+
   }  
 }
 
@@ -80,6 +98,7 @@ void draw() {
   if (yval > 190.0 ) {
     yval = 190.0;
     yv = -yv*0.5;
+    wave.patch( out );
   }
   
     
@@ -98,6 +117,10 @@ void draw() {
     //update exhaust particle
     for(int i = 0; i < particles; i++){
       e1[i].update();
+    }
+    
+    if (ms % 10 == 0) {
+      wave.unpatch( out );
     }
 }  
 

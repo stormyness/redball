@@ -5,13 +5,13 @@ Minim minim;
 AudioOutput out;
 Oscil wave;
 
-
 float xval; 
 float yval;
 float xv;
 float yv;
 int ms;
 int particles = 49;
+int waveclock = 0;
 
 // particle effect class
 class Exhaust {
@@ -41,12 +41,14 @@ class Exhaust {
 Exhaust e1[] = new Exhaust[particles];
   
 void setup() {
+  
+  
     minim = new Minim(this);
   
   // use the getLineOut method of the Minim object to get an AudioOutput object
   out = minim.getLineOut();
     // create a sine wave Oscil, set to 440 Hz, at 0.5 amplitude
-  wave = new Oscil( 440, 0.5f, Waves.SINE );
+  wave = new Oscil( 55, 0.5f, Waves.SAW );
   // patch the Oscil to the output
   
   
@@ -99,6 +101,7 @@ void draw() {
     yval = 190.0;
     yv = -yv*0.5;
     wave.patch( out );
+    waveclock = ms + 100;
   }
   
     
@@ -119,7 +122,7 @@ void draw() {
       e1[i].update();
     }
     
-    if (ms % 10 == 0) {
+    if (waveclock < ms) {
       wave.unpatch( out );
     }
 }  
